@@ -25,6 +25,8 @@ export const register = async (req, res) => {
 
   const { name, email, password } = req.body;
 
+  console.log(`Body is ${req.body}`)
+
   try {
     const existing = await User.findOne({ email: email.toLowerCase() });
     if (existing) {
