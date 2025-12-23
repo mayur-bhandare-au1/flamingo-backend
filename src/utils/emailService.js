@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer';
 
+  import { Resend } from 'resend';
+
 let transporter;
 
 const getTransporter = () => {
@@ -24,21 +26,33 @@ const getTransporter = () => {
   return transporter;
 };
 
+const resend = new Resend("re_PkBJeqMt_BiePYXwxiZX3wViYNrNkJUUe");
+
 export const sendOtpEmail = async (to, otp) => {
-  const mailTransporter = getTransporter();
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Flamingo <onboarding@resend.dev>", // OK for testing
+      to: ["flamingoappdemo@gmail.com"], // must be array (best practice)
+      subject: "Flamingo App - Email Verification OTP",
+      html: `
+        <p>Your Flamingo email verification code is:</p>
+        <h2>${otp}</h2>
+        <p>This code will expire in <strong>10 minutes</strong>.</p>
+        <p>If you did not request this, please ignore this email.</p>
+      `,
+    });
 
-  const mailOptions = {
-    from: process.env.MAIL_FROM || process.env.SMTP_USER,
-    to,
-    subject: 'Flamingo App - Email Verification OTP',
-    text: `Your Flamingo email verification code is: ${otp}\n\nThis code will expire in 10 minutes.\nIf you did not request this, please ignore this email.`,
-    html: `<p>Your Flamingo email verification code is:</p>
-           <h2>${otp}</h2>
-           <p>This code will expire in 10 minutes.</p>
-           <p>If you did not request this, please ignore this email.</p>`,
-  };
+    if (error) {
+      console.error("Resend error:", error);
+      throw new Error("Failed to send OTP email");
+    }
 
-  await mailTransporter.sendMail(mailOptions);
+    return data;
+  } catch (err) {
+    console.error("sendOtpEmail failed:", err);
+    throw err;
+  }
 };
+
 
 
