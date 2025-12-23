@@ -9,7 +9,7 @@ import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 const app = express();
-
+app.set('trust proxy', 1);
 // Security headers
 app.use(helmet());
 
