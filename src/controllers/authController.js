@@ -1,10 +1,13 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
+import connectDB from '../config/db.js';
 import User from '../models/User.js';
 import OtpToken from '../models/OtpToken.js';
 import { generateOtp } from '../utils/generateOtp.js';
 import { sendOtpEmail } from '../utils/emailService.js';
+
+await connectDB();
 
 const signToken = (userId) =>
   jwt.sign({ id: userId }, process.env.JWT_SECRET, {

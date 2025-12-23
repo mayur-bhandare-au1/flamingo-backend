@@ -4,7 +4,7 @@ import { body } from 'express-validator';
 import { login, register, resendOtp, verifyEmail } from '../controllers/authController.js';
 
 const router = express.Router();
-await connectDB();
+
 router.post(
   '/register',
   [
