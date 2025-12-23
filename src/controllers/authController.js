@@ -7,7 +7,7 @@ import OtpToken from '../models/OtpToken.js';
 import { generateOtp } from '../utils/generateOtp.js';
 import { sendOtpEmail } from '../utils/emailService.js';
 
-await connectDB();
+
 
 const signToken = (userId) =>
   jwt.sign({ id: userId }, process.env.JWT_SECRET, {
