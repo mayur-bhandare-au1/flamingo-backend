@@ -10,6 +10,8 @@ const connectDB = async () => {
   try {
     await mongoose.connect(mongoUri, {
       dbName: process.env.MONGODB_DB_NAME || 'flamingo',
+        bufferCommands: false,       // IMPORTANT
+      serverSelectionTimeoutMS: 20000,
     });
     console.log('MongoDB connected');
   } catch (error) {
